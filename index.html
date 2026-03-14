@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CLAT Prep PDF</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#0f172a;
+color:white;
+}
+
+header{
+background:#1e293b;
+padding:20px;
+text-align:center;
+font-size:26px;
+font-weight:bold;
+}
+
+.search{
+text-align:center;
+padding:15px;
+}
+
+input{
+width:90%;
+max-width:400px;
+padding:10px;
+border-radius:10px;
+border:none;
+}
+
+.filters{
+text-align:center;
+margin-bottom:10px;
+}
+
+.filters button{
+
+margin:5px;
+padding:8px 14px;
+border:none;
+border-radius:8px;
+background:#334155;
+color:white;
+cursor:pointer;
+
+}
+
+.container{
+
+max-width:900px;
+margin:auto;
+padding:15px;
+
+}
+
+.card{
+
+background:#1e293b;
+padding:16px;
+margin-bottom:12px;
+border-radius:10px;
+
+}
+
+.btn{
+
+display:inline-block;
+margin-top:10px;
+padding:8px 14px;
+background:#22c55e;
+border-radius:8px;
+text-decoration:none;
+color:white;
+
+}
+
+.save{
+
+background:#f59e0b;
+margin-left:6px;
+
+}
+
+.top{
+
+text-align:center;
+font-size:14px;
+opacity:0.8;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+CLAT Prep PDF
+
+<div style="font-size:14px;opacity:0.7;">
+Free Study Material
+</div>
+
+</header>
+
+<div class="search">
+
+<input type="text" id="search" placeholder="Search PDFs...">
+
+</div>
+
+<div class="filters">
+
+<button onclick="filterPDF('all')">All</button>
+<button onclick="filterPDF('legal')">Legal</button>
+<button onclick="filterPDF('gk')">GK</button>
+<button onclick="filterPDF('english')">English</button>
+<button onclick="filterPDF('logic')">Logic</button>
+<button onclick="showSaved()">Saved ⭐</button>
+
+</div>
+
+<div class="top">
+
+Total PDFs: <span id="count"></span>
+
+</div>
+
+<div class="container" id="pdfList"></div>
+
+<script>
+
+/* ==============================
+PDF DATABASE
+YAHI PAR PDF ADD KARNA HAI
+============================== */
+
+let pdfData = [
+
+{
+title:"CLAT 2023 Question Paper",
+link:"PASTE_PDF_LINK",
+subject:"legal"
+},
+
+{
+title:"CLAT 2022 Question Paper",
+link:"PASTE_PDF_LINK",
+subject:"legal"
+},
+
+{
+title:"CLAT GK Practice Set",
+link:"PASTE_PDF_LINK",
+subject:"gk"
+},
+
+{
+title:"CLAT English Practice Set",
+link:"PASTE_PDF_LINK",
+subject:"english"
+},
+
+{
+title:"CLAT Logical Reasoning Set",
+link:"PASTE_PDF_LINK",
+subject:"logic"
+}
+
+];
+
+/* ============================= */
+
+let saved = JSON.parse(localStorage.getItem("savedPDF")) || [];
+
+document.getElementById("count").innerText = pdfData.length;
+
+display(pdfData);
+
+function display(list){
+
+let html="";
+
+list.forEach(p=>{
+
+let isSaved = saved.includes(p.link);
+
+html+=`
+
+<div class="card">
+
+<h3>${p.title}</h3>
+
+<a class="btn" href="${p.link}" target="_blank">Open PDF</a>
+
+<button class="btn save" onclick="savePDF('${p.link}')">
+
+${isSaved ? "Saved" : "Save"}
+
+</button>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("pdfList").innerHTML = html;
+
+}
+
+document.getElementById("search").addEventListener("input",function(){
+
+let v=this.value.toLowerCase();
+
+let f=pdfData.filter(p=>p.title.toLowerCase().includes(v));
+
+display(f);
+
+});
+
+function filterPDF(sub){
+
+if(sub==="all"){
+
+display(pdfData);
+
+return;
+
+}
+
+let f=pdfData.filter(p=>p.subject===sub);
+
+display(f);
+
+}
+
+function savePDF(link){
+
+if(!saved.includes(link)){
+
+saved.push(link);
+
+}
+
+localStorage.setItem("savedPDF",JSON.stringify(saved));
+
+alert("Saved ⭐");
+
+}
+
+function showSaved(){
+
+let f=pdfData.filter(p=>saved.includes(p.link));
+
+display(f);
+
+}
+
+</script>
+
+</body>
+
+</html>
